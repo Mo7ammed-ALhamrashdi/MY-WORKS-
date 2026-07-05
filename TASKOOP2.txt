@@ -1,0 +1,1065 @@
+278: Veterinary Clinic
+
+START
+    BEGIN
+CLASS Owner
+    PRIVATE
+        ownerID : Number
+        name : String
+        phone : Number
+        address : String
+        pets : List<Pet>
+
+    CONSTRUCTOR(ownerID, name, phone, address)
+        SET ownerID
+        SET name
+        SET phone
+        SET address
+        CREATE empty pets list
+    END CONSTRUCTOR
+
+    METHOD addPet(pet)
+        ADD pet TO pets
+    END METHOD
+END CLASS
+
+
+CLASS Species
+    PRIVATE
+        speciesID : Number
+        speciesName : String
+        careRequirements : String
+
+    CONSTRUCTOR(speciesID, speciesName, careRequirements)
+        SET speciesID
+        SET speciesName
+        SET careRequirements
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS MedicalHistory
+    PRIVATE
+        historyID : Number
+        date : Date
+        description : String
+
+    CONSTRUCTOR(historyID, date, description)
+        SET historyID
+        SET date
+        SET description
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Pet
+    PRIVATE
+        petID : Number
+        name : String
+        dateOfBirth : Date
+        species : Species
+        medicalHistory : List<MedicalHistory>
+
+    CONSTRUCTOR(petID, name, dateOfBirth, species)
+        SET petID
+        SET name
+        SET dateOfBirth
+        SET species
+        CREATE empty medicalHistory list
+    END CONSTRUCTOR
+
+    METHOD addMedicalHistory(record)
+        ADD record TO medicalHistory
+    END METHOD
+
+    METHOD calculateAge()
+        RETURN CurrentYear - Year(dateOfBirth)
+    END METHOD
+END CLASS
+
+
+CLASS Vet
+    PRIVATE
+        vetID : Number
+        name : String
+        specialization : String
+
+    CONSTRUCTOR(vetID, name, specialization)
+        SET vetID
+        SET name
+        SET specialization
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS VitalSigns
+    PRIVATE
+        temperature : Number
+        heartRate : Number
+        weight : Number
+
+    CONSTRUCTOR(temperature, heartRate, weight)
+        SET temperature
+        SET heartRate
+        SET weight
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Examination
+    PRIVATE
+        examinationID : Number
+        diagnosis : String
+        vitalSigns : VitalSigns
+
+    CONSTRUCTOR(examinationID, diagnosis, vitalSigns)
+        SET examinationID
+        SET diagnosis
+        SET vitalSigns
+    END CONSTRUCTOR
+
+    METHOD checkUrgency()
+        IF vitalSigns.temperature > 40 OR vitalSigns.heartRate > 180 THEN
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        ENDIF
+    END METHOD
+END CLASS
+
+
+CLASS Treatment
+    PRIVATE
+        treatmentID : Number
+        treatmentName : String
+        cost : Number
+
+    CONSTRUCTOR(treatmentID, treatmentName, cost)
+        SET treatmentID
+        SET treatmentName
+        SET cost
+    END CONSTRUCTOR
+
+    METHOD getCost()
+        RETURN cost
+    END METHOD
+END CLASS
+
+
+CLASS Visit
+    PRIVATE
+        visitID : Number
+        visitDate : Date
+        owner : Owner
+        pet : Pet
+        vet : Vet
+        examination : Examination
+        treatments : List<Treatment>
+
+    CONSTRUCTOR(visitID, visitDate, owner, pet, vet, examination)
+        SET visitID
+        SET visitDate
+        SET owner
+        SET pet
+        SET vet
+        SET examination
+        CREATE empty treatments list
+    END CONSTRUCTOR
+
+    METHOD addTreatment(treatment)
+        ADD treatment TO treatments
+    END METHOD
+
+    METHOD calculateTotalCost()
+        total ← 0
+        FOR EACH treatment IN treatments
+            total ← total + treatment.getCost()
+        END FOR
+        RETURN total
+    END METHOD
+END CLASS
+END 
+    STOP
+
+
+
+Task 279: Movie Theate
+
+START
+     BEGIN
+CLASS Film
+    PRIVATE
+        filmID : Number
+        title : String
+        duration : Number
+        genre : String
+
+    CONSTRUCTOR(filmID, title, duration, genre)
+        SET filmID
+        SET title
+        SET duration
+        SET genre
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Screen
+    PRIVATE
+        screenID : Number
+        screenName : String
+
+    CONSTRUCTOR(screenID, screenName)
+        SET screenID
+        SET screenName
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS ScreeningRoom
+    PRIVATE
+        roomID : Number
+        seatingLayout : String
+        capacity : Number
+        screen : Screen
+
+    CONSTRUCTOR(roomID, seatingLayout, capacity, screen)
+        SET roomID
+        SET seatingLayout
+        SET capacity
+        SET screen
+    END CONSTRUCTOR
+
+    METHOD getCapacity()
+        RETURN capacity
+    END METHOD
+END CLASS
+
+
+CLASS Customer
+    PRIVATE
+        customerID : Number
+        name : String
+        phone : Number
+
+    CONSTRUCTOR(customerID, name, phone)
+        SET customerID
+        SET name
+        SET phone
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Seat
+    PRIVATE
+        seatNumber : String
+
+    CONSTRUCTOR(seatNumber)
+        SET seatNumber
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Ticket
+    PRIVATE
+        ticketID : Number
+        customer : Customer
+        showtime : Showtime
+        seat : Seat
+
+    CONSTRUCTOR(ticketID, customer, showtime, seat)
+        SET ticketID
+        SET customer
+        SET showtime
+        SET seat
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Showtime
+    PRIVATE
+        showtimeID : Number
+        startTime : Time
+        endTime : Time
+        film : Film
+        room : ScreeningRoom
+        tickets : List<Ticket>
+
+    CONSTRUCTOR(showtimeID, startTime, endTime, film, room)
+        SET showtimeID
+        SET startTime
+        SET endTime
+        SET film
+        SET room
+        CREATE empty tickets list
+    END CONSTRUCTOR
+
+    METHOD checkOverlap(otherShowtime)
+        IF room = otherShowtime.room AND
+           startTime < otherShowtime.endTime AND
+           endTime > otherShowtime.startTime THEN
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        ENDIF
+    END METHOD
+
+    METHOD bookSeat(ticket)
+        FOR EACH bookedTicket IN tickets
+            IF bookedTicket.seat = ticket.seat THEN
+                RETURN "Seat Already Booked"
+            ENDIF
+        END FOR
+
+        IF SIZE(tickets) < room.getCapacity() THEN
+            ADD ticket TO tickets
+            RETURN "Booking Successful"
+        ELSE
+            RETURN "Room Full"
+        ENDIF
+    END METHOD
+
+    METHOD getAvailableSeats()
+        RETURN room.getCapacity() - SIZE(tickets)
+    END METHOD
+END CLASS
+END 
+    STOP
+
+
+Task 280: Warehouse Inventory
+
+
+START 
+     BEGIN
+CLASS Warehouse
+    PRIVATE
+        warehouseID : Number
+        name : String
+        products : List<Product>
+
+    CONSTRUCTOR(warehouseID, name)
+        SET warehouseID
+        SET name
+        CREATE empty products list
+    END CONSTRUCTOR
+
+    METHOD addProduct(product)
+        ADD product TO products
+    END METHOD
+
+    METHOD removeProduct(product)
+        REMOVE product FROM products
+    END METHOD
+
+    METHOD getProducts()
+        RETURN products
+    END METHOD
+END CLASS
+
+
+CLASS Category
+    PRIVATE
+        categoryID : Number
+        categoryName : String
+
+    CONSTRUCTOR(categoryID, categoryName)
+        SET categoryID
+        SET categoryName
+    END CONSTRUCTOR
+
+    METHOD updateCategoryName(newName)
+        categoryName ← newName
+    END METHOD
+END CLASS
+
+
+CLASS Vendor
+    PRIVATE
+        vendorID : Number
+        vendorName : String
+        phone : Number
+        email : String
+        reliabilityRating : Number
+        products : List<Product>
+
+    CONSTRUCTOR(vendorID, vendorName, phone, email, reliabilityRating)
+        SET vendorID
+        SET vendorName
+        SET phone
+        SET email
+        SET reliabilityRating
+        CREATE empty products list
+    END CONSTRUCTOR
+
+    METHOD addProduct(product)
+        ADD product TO products
+    END METHOD
+
+    METHOD updateReliability(newRating)
+        reliabilityRating TO newRating
+    END METHOD
+
+    METHOD getProducts()
+        RETURN products
+    END METHOD
+END CLASS
+
+
+CLASS StorageBin
+    PRIVATE
+        binID : Number
+        location : String
+        quantity : Number
+
+    CONSTRUCTOR(binID, location, quantity)
+        SET binID
+        SET location
+        SET quantity
+    END CONSTRUCTOR
+
+    METHOD addStock(amount)
+        quantity TO quantity + amount
+    END METHOD
+
+    METHOD removeStock(amount)
+        quantity TO quantity - amount
+    END METHOD
+
+    METHOD getQuantity()
+        RETURN quantity
+    END METHOD
+END CLASS
+
+
+CLASS StockMovement
+    PRIVATE
+        movementID : Number
+        movementType : String
+        quantity : Number
+        date : Date
+
+    CONSTRUCTOR(movementID, movementType, quantity, date)
+        SET movementID
+        SET movementType
+        SET quantity
+        SET date
+    END CONSTRUCTOR
+
+    METHOD displayMovement()
+        PRINT movementType
+        PRINT quantity
+        PRINT date
+    END METHOD
+END CLASS
+
+
+CLASS Product
+    PRIVATE
+        productID : Number
+        productName : String
+        category : Category
+        vendor : Vendor
+        bins : List<StorageBin>
+        movements : List<StockMovement>
+
+    CONSTRUCTOR(productID, productName, category, vendor)
+        SET productID
+        SET productName
+        SET category
+        SET vendor
+        CREATE empty bins list
+        CREATE empty movements list
+    END CONSTRUCTOR
+
+    METHOD addBin(bin)
+        ADD bin TO bins
+    END METHOD
+
+    METHOD addMovement(movement)
+        ADD movement TO movements
+    END METHOD
+
+    METHOD calculateTotalStock()
+        total TO 0
+        FOR EACH bin IN bins
+            total TO total + bin.getQuantity()
+        END FOR
+        RETURN total
+    END METHOD
+
+    METHOD moveStockIn(bin, amount)
+        bin.addStock(amount)
+    END METHOD
+
+    METHOD moveStockOut(bin, amount)
+        IF calculateTotalStock() >= amount THEN
+            bin.removeStock(amount)
+        ELSE
+            PRINT "Insufficient Stock"
+        END IF
+    END METHOD
+END CLASS
+END
+    STOP
+
+
+Task 281: School Classroom
+
+START
+    BEGIN
+CLASS SchoolClass
+    PRIVATE
+        classID : Number
+        className : String
+        maxSize : Number
+        schedule : String
+        teacher : Teacher
+        subject : Subject
+        students : List<Student>
+
+    CONSTRUCTOR(classID, className, maxSize, schedule, teacher, subject)
+        SET classID
+        SET className
+        SET maxSize
+        SET schedule
+        SET teacher
+        SET subject
+        CREATE empty students list
+    END CONSTRUCTOR
+
+    METHOD enrollStudent(student)
+        IF SIZE(students) < maxSize THEN
+            ADD student TO students
+        ELSE
+            PRINT "Class Full"
+        END IF
+    END METHOD
+
+    METHOD removeStudent(student)
+        REMOVE student FROM students
+    END METHOD
+
+    METHOD getStudents()
+        RETURN students
+    END METHOD
+END CLASS
+
+
+CLASS Teacher
+    PRIVATE
+        teacherID : Number
+        name : String
+        phone : Number
+
+    CONSTRUCTOR(teacherID, name, phone)
+        SET teacherID
+        SET name
+        SET phone
+    END CONSTRUCTOR
+
+    METHOD addGrade(student, grade)
+        student.addGrade(grade)
+    END METHOD
+
+    METHOD removeGrade(student, grade)
+        REMOVE grade FROM student.grades
+    END METHOD
+END CLASS
+
+
+CLASS Subject
+    PRIVATE
+        subjectID : Number
+        subjectName : String
+        syllabus : String
+
+    CONSTRUCTOR(subjectID, subjectName, syllabus)
+        SET subjectID
+        SET subjectName
+        SET syllabus
+    END CONSTRUCTOR
+
+    METHOD updateSyllabus(newSyllabus)
+        syllabus TO newSyllabus
+    END METHOD
+END CLASS
+
+
+CLASS Assessment
+    PRIVATE
+        assessmentID : Number
+        assessmentName : String
+
+    CONSTRUCTOR(assessmentID, assessmentName)
+        SET assessmentID
+        SET assessmentName
+    END CONSTRUCTOR
+
+    METHOD updateAssessment(newName)
+        assessmentName TO newName
+    END METHOD
+END CLASS
+
+
+CLASS Grade
+    PRIVATE
+        gradeID : Number
+        score : Number
+        weighting : Number
+        assessment : Assessment
+
+    CONSTRUCTOR(gradeID, score, weighting, assessment)
+        SET gradeID
+        SET score
+        SET weighting
+        SET assessment
+    END CONSTRUCTOR
+
+    METHOD updateScore(newScore)
+        score TO newScore
+    END METHOD
+
+    METHOD displayGrade()
+        PRINT score
+        PRINT weighting
+    END METHOD
+END CLASS
+
+
+CLASS Student
+    PRIVATE
+        studentID : Number
+        name : String
+        dateOfBirth : Date
+        grades : List<Grade>
+
+    CONSTRUCTOR(studentID, name, dateOfBirth)
+        SET studentID
+        SET name
+        SET dateOfBirth
+        CREATE empty grades list
+    END CONSTRUCTOR
+
+    METHOD addGrade(grade)
+        ADD grade TO grades
+    END METHOD
+
+    METHOD calculateAverage()
+        total TO 0
+        weightTotal ← 0
+
+        FOR EACH grade IN grades
+            total ← total + (grade.score * grade.weighting)
+            weightTotal ← weightTotal + grade.weighting
+        END FOR
+
+        RETURN total / weightTotal
+    END METHOD
+
+    METHOD getGrades()
+        RETURN grades
+    END METHOD
+END CLASS
+END
+    STOP
+
+Task 282: Insurance Policy
+
+START
+    BEGIN
+
+CLASS PolicyHolder
+    PRIVATE
+        holderID : Number
+        name : String
+        phone : Number
+        address : String
+
+    CONSTRUCTOR(holderID, name, phone, address)
+        SET holderID
+        SET name
+        SET phone
+        SET address
+    END CONSTRUCTOR
+
+    METHOD updateContact(newPhone, newAddress)
+        phone ← newPhone
+        address ← newAddress
+    END METHOD
+END CLASS
+
+
+CLASS Coverage
+    PRIVATE
+        coverageID : Number
+        coverageType : String
+        coverageLimit : Number
+
+    CONSTRUCTOR(coverageID, coverageType, coverageLimit)
+        SET coverageID
+        SET coverageType
+        SET coverageLimit
+    END CONSTRUCTOR
+
+    METHOD updateCoverageLimit(newLimit)
+        coverageLimit TO newLimit
+    END METHOD
+
+    METHOD getCoverageLimit()
+        RETURN coverageLimit
+    END METHOD
+END CLASS
+
+
+CLASS Claim
+    PRIVATE
+        claimID : Number
+        claimDate : Date
+        amount : Number
+        status : String
+        coverage : Coverage
+
+    CONSTRUCTOR(claimID, claimDate, amount, status, coverage)
+        SET claimID
+        SET claimDate
+        SET amount
+        SET status
+        SET coverage
+    END CONSTRUCTOR
+
+    METHOD updateStatus(newStatus)
+        status ← newStatus
+    END METHOD
+
+    METHOD getAmount()
+        RETURN amount
+    END METHOD
+
+    METHOD displayClaim()
+        PRINT claimID
+        PRINT status
+        PRINT amount
+    END METHOD
+END CLASS
+
+
+CLASS Policy
+    PRIVATE
+        policyID : Number
+        issueDate : Date
+        policyHolder : PolicyHolder
+        coverages : List<Coverage>
+        claims : List<Claim>
+
+    CONSTRUCTOR(policyID, issueDate, policyHolder)
+        SET policyID
+        SET issueDate
+        SET policyHolder
+        CREATE empty coverages list
+        CREATE empty claims list
+    END CONSTRUCTOR
+
+    METHOD addCoverage(coverage)
+        ADD coverage TO coverages
+    END METHOD
+
+    METHOD fileClaim(claim)
+        IF claim.getAmount() <= claim.coverage.getCoverageLimit() THEN
+            ADD claim TO claims
+        ELSE
+            PRINT "Claim exceeds coverage limit"
+        END IF
+    END METHOD
+
+    METHOD calculateRemainingCoverage()
+        totalCoverage TO 0
+        totalClaims TO 0
+
+        FOR EACH coverage IN coverages
+            totalCoverage ← totalCoverage + coverage.getCoverageLimit()
+        END FOR
+
+        FOR EACH claim IN claims
+            IF claim.status = "Approved" THEN
+                totalClaims TO totalClaims + claim.getAmount()
+            END IF
+        END FOR
+
+        RETURN totalCoverage - totalClaims
+    END METHOD
+
+    METHOD getClaims()
+        RETURN claims
+    END METHOD
+END CLASS
+END
+   STOP
+
+Task 283:
+CLASS Customer
+    PRIVATE
+        customerID : Number
+        name : String
+        phone : Number
+
+    CONSTRUCTOR(customerID, name, phone)
+        SET customerID
+        SET name
+        SET phone
+    END CONSTRUCTOR
+
+    METHOD updateContact(newPhone)
+        phone to newPhone
+    END METHOD
+END CLASS
+
+
+CLASS Model
+    PRIVATE
+        modelID : Number
+        modelName : String
+        basePrice : Number
+
+    CONSTRUCTOR(modelID, modelName, basePrice)
+        SET modelID
+        SET modelName
+        SET basePrice
+    END CONSTRUCTOR
+
+    METHOD updateBasePrice(price)
+        basePrice to price
+    END METHOD
+END CLASS
+
+
+CLASS Vehicle
+    PRIVATE
+        vehicleID : Number
+        color : String
+        listedPrice : Number
+        available : Boolean
+        model : Model
+
+    CONSTRUCTOR(vehicleID, color, listedPrice, model)
+        SET vehicleID
+        SET color
+        SET listedPrice
+        SET model
+        available to TRUE
+    END CONSTRUCTOR
+
+    METHOD sellVehicle()
+        available to FALSE
+    END METHOD
+
+    METHOD updateListedPrice(price)
+        IF price >= model.basePrice THEN
+            listedPrice to price
+        END IF
+    END METHOD
+
+    METHOD isAvailable()
+        RETURN available
+    END METHOD
+END CLASS
+
+
+CLASS AddOnFeature
+    PRIVATE
+        featureID : Number
+        featureName : String
+        cost : Number
+
+    CONSTRUCTOR(featureID, featureName, cost)
+        SET featureID
+        SET featureName
+        SET cost
+    END CONSTRUCTOR
+
+    METHOD getCost()
+        RETURN cost
+    END METHOD
+END CLASS
+
+
+CLASS Sale
+    PRIVATE
+        saleID : Number
+        customer : Customer
+        vehicle : Vehicle
+        agreedPrice : Number
+        addOns : List<AddOnFeature>
+
+    CONSTRUCTOR(saleID, customer, vehicle, agreedPrice)
+        SET saleID
+        SET customer
+        SET vehicle
+        SET agreedPrice
+        CREATE empty addOns list
+        vehicle.sellVehicle()
+    END CONSTRUCTOR
+
+    METHOD addFeature(feature)
+        ADD feature TO addOns
+    END METHOD
+
+    METHOD calculateTotalPrice()
+        total to agreedPrice
+        FOR EACH feature IN addOns
+            total to total + feature.getCost()
+        END FOR
+        RETURN total
+    END METHOD
+END CLASS
+
+Task 284:
+CLASS Couple
+    PRIVATE
+        coupleID : Number
+        brideName : String
+        groomName : String
+
+    CONSTRUCTOR(coupleID, brideName, groomName)
+        SET coupleID
+        SET brideName
+        SET groomName
+    END CONSTRUCTOR
+
+    METHOD updateNames(bride, groom)
+        brideName to bride
+        groomName to groom
+    END METHOD
+END CLASS
+
+
+CLASS Vendor
+    PRIVATE
+        vendorID : Number
+        vendorName : String
+        phone : Number
+        specialty : String
+        bookedDates : List<Date>
+
+    CONSTRUCTOR(vendorID, vendorName, phone, specialty)
+        SET vendorID
+        SET vendorName
+        SET phone
+        SET specialty
+        CREATE empty bookedDates list
+    END CONSTRUCTOR
+
+    METHOD assignDate(date)
+        ADD date TO bookedDates
+    END METHOD
+
+    METHOD isAvailable(date)
+        RETURN date NOT IN bookedDates
+    END METHOD
+END CLASS
+
+
+CLASS Guest
+    PRIVATE
+        guestID : Number
+        guestName : String
+        phone : Number
+
+    CONSTRUCTOR(guestID, guestName, phone)
+        SET guestID
+        SET guestName
+        SET phone
+    END CONSTRUCTOR
+
+    METHOD updateContact(newPhone)
+        phone to newPhone
+    END METHOD
+END CLASS
+
+
+CLASS PlanningTask
+    PRIVATE
+        taskID : Number
+        taskName : String
+        completed : Boolean
+        cost : Number
+        vendor : Vendor
+
+    CONSTRUCTOR(taskID, taskName, cost, vendor)
+        SET taskID
+        SET taskName
+        SET cost
+        SET vendor
+        completed to FALSE
+    END CONSTRUCTOR
+
+    METHOD markCompleted()
+        completed to TRUE
+    END METHOD
+
+    METHOD getCost()
+        RETURN cost
+    END METHOD
+END CLASS
+
+
+CLASS Event
+    PRIVATE
+        eventID : Number
+        eventDate : Date
+        budget : Number
+        couple : Couple
+        tasks : List<PlanningTask>
+        guests : List<Guest>
+
+    CONSTRUCTOR(eventID, eventDate, budget, couple)
+        SET eventID
+        SET eventDate
+        SET budget
+        SET couple
+        CREATE empty tasks list
+        CREATE empty guests list
+    END CONSTRUCTOR
+
+    METHOD addTask(task)
+        IF calculateTotalCost() + task.getCost() <= budget THEN
+            ADD task TO tasks
+        ELSE
+            PRINT "Budget Exceeded"
+        END IF
+    END METHOD
+
+    METHOD addGuest(guest)
+        ADD guest TO guests
+    END METHOD
+
+    METHOD calculateTotalCost()
+        total to 0
+        FOR EACH task IN tasks
+            total to total + task.getCost()
+        END FOR
+        RETURN total
+    END METHOD
+
+    METHOD calculateCompletion()
+        completed to 0
+
+        FOR EACH task IN tasks
+            IF task.completed = TRUE THEN
+                completed ← completed + 1
+            END IF
+        END FOR
+
+        RETURN (completed * 100) / SIZE(tasks)
+    END METHOD
+END CLASS
+
+
+
+
+
+
+
+
+
+
+
