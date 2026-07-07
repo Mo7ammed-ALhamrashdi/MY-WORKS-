@@ -1,0 +1,345 @@
+Task 288: Bookshop
+
+START
+    BEGIN
+CLASS Book
+    ATTRIBUTES
+        PRIVATE title : String
+        PRIVATE author : String
+        PRIVATE price : Number
+        PRIVATE genre : String
+CONSTRUCTOR(title, author, price, genre)
+        SET title
+        SET author
+        SET price
+        SET genre
+END CONSTRUCTOR
+METHOD getPrice()
+    RETURN price
+    END METHOD
+END CLASS
+CLASS Customer
+    ATTRIBUTES
+        PRIVATE customerID : Number
+        PRIVATE customerName : String
+        PRIVATE purchaseHistory : List<Sale>
+CONSTRUCTOR(customerID, customerName)
+        SET customerID
+        SET customerName
+        CREATE empty purchaseHistory list
+END CONSTRUCTOR
+METHOD addPurchase(sale)
+        ADD sale TO purchaseHistory
+    END METHOD
+  END CLASS
+CLASS Sale
+    ATTRIBUTES
+        PRIVATE saleID : Number
+        PRIVATE book : Book
+        PRIVATE customer : Customer
+        PRIVATE soldPrice : Number
+CONSTRUCTOR(saleID, book, customer)
+        SET saleID
+        SET book
+        SET customer
+        SET soldPrice = book.getPrice()
+END CONSTRUCTOR
+END CLASS
+  END
+STOP
+
+Task 289: Online Exam Platform
+START
+    BEGIN
+CLASS Question
+    ATTRIBUTES
+        PRIVATE questionText : String
+        PRIVATE correctAnswer : String
+        PRIVATE points : Number
+CONSTRUCTOR(questionText, correctAnswer, points)
+        SET questionText
+        SET correctAnswer
+        SET points
+END CONSTRUCTOR
+METHOD checkAnswer(answer)
+        RETURN answer = correctAnswer
+END METHOD
+METHOD getPoints()
+        RETURN points
+END METHOD
+END CLASS
+CLASS Exam
+    ATTRIBUTES
+        PRIVATE examID : Number
+        PRIVATE examTitle : String
+        PRIVATE timeLimit : Number
+        PRIVATE questions : List<Question>
+CONSTRUCTOR(examID, examTitle, timeLimit)
+        SET examID
+        SET examTitle
+        SET timeLimit
+        CREATE empty questions list
+END CONSTRUCTOR
+METHOD addQuestion(question)
+        ADD question TO questions
+END METHOD
+END CLASS
+CLASS Student
+    ATTRIBUTES
+        PRIVATE studentID : Number
+        PRIVATE studentName : String
+        PRIVATE attempts : List<Attempt>
+
+CONSTRUCTOR(studentID, studentName)
+        SET studentID
+        SET studentName
+        CREATE empty attempts list
+END CONSTRUCTOR
+METHOD addAttempt(attempt)
+        ADD attempt TO attempts
+    END METHOD
+END CLASS
+
+CLASS Attempt
+    ATTRIBUTES
+        PRIVATE attemptID : Number
+        PRIVATE exam : Exam
+        PRIVATE student : Student
+        PRIVATE selectedAnswers : Map<Question, String>
+        PRIVATE startTime : String
+CONSTRUCTOR(attemptID, exam, student, startTime)
+        SET attemptID
+        SET exam
+        SET student
+        SET startTime
+        CREATE empty selectedAnswers map
+END CONSTRUCTOR
+METHOD submitAnswer(question, answer, currentTime)
+IF currentTime <= exam.timeLimit THEN
+            ADD answer TO selectedAnswers WITH question
+ELSE
+            DISPLAY "Time limit exceeded"
+        END IF
+END METHOD
+METHOD calculateScore()
+        SET score = 0
+        FOR EACH question IN exam.questions
+            IF question.checkAnswer(selectedAnswers[question]) THEN
+                SET score = score + question.getPoints()
+            END IF
+END FOR
+        RETURN score
+END METHOD
+END CLASS
+  END
+STOP
+
+Task 290: Taxi Company
+START
+    BEGIN
+CLASS Driver
+    ATTRIBUTES
+        PRIVATE driverID : Number
+        PRIVATE driverName : String
+        PRIVATE vehicle : String
+        PRIVATE trips : List<Trip>
+
+CONSTRUCTOR(driverID, driverName, vehicle)
+        SET driverID
+        SET driverName
+        SET vehicle
+        CREATE empty trips list
+END CONSTRUCTOR
+METHOD addTrip(trip)
+        ADD trip TO trips
+    END METHOD
+END CLASS
+
+CLASS Passenger
+    ATTRIBUTES
+        PRIVATE passengerID : Number
+        PRIVATE passengerName : String
+        PRIVATE phoneNumber : String
+
+CONSTRUCTOR(passengerID, passengerName, phoneNumber)
+        SET passengerID
+        SET passengerName
+        SET phoneNumber
+    END CONSTRUCTOR
+END CLASS
+
+CLASS Trip
+    ATTRIBUTES
+        PRIVATE tripID : Number
+        PRIVATE driver : Driver
+        PRIVATE passenger : Passenger
+        PRIVATE pickupLocation : String
+        PRIVATE dropoffLocation : String
+        PRIVATE fare : Number
+CONSTRUCTOR(tripID, driver, passenger, pickupLocation, dropoffLocation, fare)
+        SET tripID
+        SET driver
+        SET passenger
+        SET pickupLocation
+        SET dropoffLocation
+        SET fare
+    END CONSTRUCTOR
+END CLASS
+
+   END
+STOP
+
+Task 291: Co-working Space
+START
+    BEGIN
+CLASS MembershipPlan
+    ATTRIBUTES
+        PRIVATE planName : String
+        PRIVATE monthlyQuotaHours : Number
+
+CONSTRUCTOR(planName, monthlyQuotaHours)
+        SET planName
+        SET monthlyQuotaHours
+END CONSTRUCTOR
+
+METHOD getQuota()
+        RETURN monthlyQuotaHours
+    END METHOD
+END CLASS
+CLASS Member
+    ATTRIBUTES
+        PRIVATE memberID : Number
+        PRIVATE memberName : String
+        PRIVATE plan : MembershipPlan
+        PRIVATE bookings : List<Booking>
+
+CONSTRUCTOR(memberID, memberName, plan)
+        SET memberID
+        SET memberName
+        SET plan
+        CREATE empty bookings list
+END CONSTRUCTOR
+METHOD addBooking(booking)
+        ADD booking TO bookings
+END METHOD
+METHOD getRemainingHours()
+        SET usedHours = 0
+        FOR EACH booking IN bookings
+            SET usedHours = usedHours + booking.getDuration()
+        END FOR
+        RETURN plan.getQuota() - usedHours
+END METHOD
+END CLASS
+CLASS Room
+    ATTRIBUTES
+        PRIVATE roomID : Number
+        PRIVATE roomName : String
+        PRIVATE bookings : List<Booking>
+CONSTRUCTOR(roomID, roomName)
+        SET roomID
+        SET roomName
+        CREATE empty bookings list
+END CONSTRUCTOR
+METHOD addBooking(booking)
+        ADD booking TO bookings
+END METHOD
+METHOD isAvailable(startTime, endTime)
+        FOR EACH booking IN bookings
+            IF booking.overlaps(startTime, endTime) THEN
+          RETURN FALSE
+        END IF
+    END FOR
+    RETURN TRUE
+END METHOD
+END CLASS
+CLASS Booking
+    ATTRIBUTES
+        PRIVATE bookingID : Number
+        PRIVATE member : Member
+        PRIVATE room : Room
+        PRIVATE startTime : String
+        PRIVATE endTime : String
+        PRIVATE duration : Number
+CONSTRUCTOR(bookingID, member, room, startTime, endTime, duration)
+        SET bookingID
+        SET member
+        SET room
+        SET startTime
+        SET endTime
+        SET duration
+END CONSTRUCTOR
+METHOD getDuration()
+        RETURN duration
+END METHOD
+METHOD overlaps(startTime, endTime)
+        IF startTime < endTime AND endTime > startTime THEN
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        END IF
+    END METHOD
+END CLASS
+
+   END
+STOP
+
+
+Task 292: Personal Trainer Bookings
+START
+    BEGIN
+CLASS Client
+    ATTRIBUTES
+        PRIVATE clientID : Number
+        PRIVATE clientName : String
+        PRIVATE phoneNumber : String
+        PRIVATE email : String
+        PRIVATE sessions : List<Session>
+
+    CONSTRUCTOR(clientID, clientName, phoneNumber, email)
+        SET clientID
+        SET clientName
+        SET phoneNumber
+        SET email
+        CREATE empty sessions list
+    END CONSTRUCTOR
+
+    METHOD addSession(session)
+        ADD session TO sessions
+    END METHOD
+END CLASS
+CLASS Trainer
+    ATTRIBUTES
+        PRIVATE trainerID : Number
+        PRIVATE trainerName : String
+        PRIVATE allSessions : List<Session>
+
+    CONSTRUCTOR(trainerID, trainerName)
+        SET trainerID
+        SET trainerName
+        CREATE empty allSessions list
+    END CONSTRUCTOR
+
+    METHOD addSession(session)
+        ADD session TO allSessions
+    END METHOD
+END CLASS
+CLASS Session
+    ATTRIBUTES
+        PRIVATE sessionID : Number
+        PRIVATE client : Client
+        PRIVATE sessionDate : String
+        PRIVATE duration : Number
+        PRIVATE workoutType : String
+
+    CONSTRUCTOR(sessionID, client, sessionDate, duration, workoutType)
+        SET sessionID
+        SET client
+        SET sessionDate
+        SET duration
+        SET workoutType
+    END CONSTRUCTOR
+END CLASS
+  END
+STOP
+
+
