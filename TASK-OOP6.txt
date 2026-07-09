@@ -1,0 +1,458 @@
+Task 303: Musical Instruments Store
+START
+  BEGIN
+CLASS Instrument
+    ATTRIBUTES
+        PRIVATE brand : String
+        PRIVATE price : Number
+
+    CONSTRUCTOR(brand, price)
+        SET brand
+        SET price
+    END CONSTRUCTOR
+
+    METHOD describePlayStyle()
+    END METHOD
+END CLASS
+
+
+CLASS Guitar EXTENDS Instrument
+    ATTRIBUTES
+        PRIVATE numberOfStrings : Number
+
+    CONSTRUCTOR(brand, price, numberOfStrings)
+        CALL Instrument(brand, price)
+        SET numberOfStrings
+    END CONSTRUCTOR
+
+    METHOD describePlayStyle()
+        RETURN "Strummed or Plucked"
+    END METHOD
+END CLASS
+
+
+CLASS DrumKit EXTENDS Instrument
+    ATTRIBUTES
+        PRIVATE numberOfDrums : Number
+
+    CONSTRUCTOR(brand, price, numberOfDrums)
+        CALL Instrument(brand, price)
+        SET numberOfDrums
+    END CONSTRUCTOR
+
+    METHOD describePlayStyle()
+        RETURN "Struck"
+    END METHOD
+END CLASS
+
+
+CLASS Keyboard EXTENDS Instrument
+    ATTRIBUTES
+        PRIVATE numberOfKeys : Number
+
+    CONSTRUCTOR(brand, price, numberOfKeys)
+        CALL Instrument(brand, price)
+        SET numberOfKeys
+    END CONSTRUCTOR
+
+    METHOD describePlayStyle()
+        RETURN "Pressed"
+    END METHOD
+END CLASS
+
+
+CLASS Store
+    ATTRIBUTES
+        PRIVATE instruments : List<Instrument>
+
+    CONSTRUCTOR()
+        CREATE empty instruments list
+    END CONSTRUCTOR
+
+    METHOD addInstrument(instrument)
+        ADD instrument TO instruments
+    END METHOD
+END CLASS
+   
+  END
+STOP
+
+Task 304: Fitness App Workouts
+START
+  BEGIN
+CLASS Workout
+    ATTRIBUTES
+        PRIVATE workoutDate : String
+        PRIVATE duration : Number
+
+    CONSTRUCTOR(workoutDate, duration)
+        SET workoutDate
+        SET duration
+    END CONSTRUCTOR
+
+    METHOD calculateCalories()
+        RETURN 0
+    END METHOD
+END CLASS
+
+CLASS RunningWorkout EXTENDS Workout
+    ATTRIBUTES
+        PRIVATE distance : Number
+        PRIVATE pace : Number
+
+    CONSTRUCTOR(workoutDate, duration, distance, pace)
+        CALL Workout(workoutDate, duration)
+        SET distance
+        SET pace
+    END CONSTRUCTOR
+
+    METHOD calculateCalories()
+        RETURN distance * pace * 10
+    END METHOD
+END CLASS
+
+CLASS CyclingWorkout EXTENDS Workout
+    ATTRIBUTES
+        PRIVATE distance : Number
+        PRIVATE resistanceLevel : Number
+
+    CONSTRUCTOR(workoutDate, duration, distance, resistanceLevel)
+        CALL Workout(workoutDate, duration)
+        SET distance
+        SET resistanceLevel
+    END CONSTRUCTOR
+
+    METHOD calculateCalories()
+        RETURN distance * resistanceLevel * 8
+    END METHOD
+END CLASS
+
+CLASS WeightTrainingWorkout EXTENDS Workout
+    ATTRIBUTES
+        PRIVATE sets : Number
+        PRIVATE reps : Number
+
+    CONSTRUCTOR(workoutDate, duration, sets, reps)
+        CALL Workout(workoutDate, duration)
+        SET sets
+        SET reps
+    END CONSTRUCTOR
+
+    METHOD calculateCalories()
+        RETURN sets * reps * 2
+    END METHOD
+END CLASS
+
+CLASS FitnessLog
+    ATTRIBUTES
+        PRIVATE workouts : List<Workout>
+
+    CONSTRUCTOR()
+        CREATE empty workouts list
+    END CONSTRUCTOR
+
+    METHOD addWorkout(workout)
+        ADD workout TO workouts
+    END METHOD
+END CLASS
+  
+  END
+STOP
+
+Task 305: Video Game Characters
+START
+  BEGIN
+
+CLASS Character
+    ATTRIBUTES
+        PRIVATE characterName : String
+        PRIVATE health : Number
+        PRIVATE inventory : Inventory
+
+    CONSTRUCTOR(characterName, health, inventory)
+        SET characterName
+        SET health
+        SET inventory
+    END CONSTRUCTOR
+
+    METHOD attack()
+    END METHOD
+END CLASS
+
+CLASS Warrior EXTENDS Character
+    ATTRIBUTES
+        PRIVATE heavyArmor : Boolean
+
+    CONSTRUCTOR(characterName, health, inventory, heavyArmor)
+        CALL Character(characterName, health, inventory)
+        SET heavyArmor
+    END CONSTRUCTOR
+
+    METHOD attack()
+        DISPLAY "Attacks using melee strength"
+    END METHOD
+END CLASS
+
+CLASS Mage EXTENDS Character
+    ATTRIBUTES
+        PRIVATE mana : Number
+
+    CONSTRUCTOR(characterName, health, inventory, mana)
+        CALL Character(characterName, health, inventory)
+        SET mana
+    END CONSTRUCTOR
+
+    METHOD attack()
+        IF mana > 0 THEN
+            SET mana = mana - 10
+            DISPLAY "Casts a magic spell"
+        ELSE
+            DISPLAY "Not enough mana"
+        END IF
+    END METHOD
+END CLASS
+
+CLASS Archer EXTENDS Character
+    ATTRIBUTES
+        PRIVATE arrows : Number
+
+    CONSTRUCTOR(characterName, health, inventory, arrows)
+        CALL Character(characterName, health, inventory)
+        SET arrows
+    END CONSTRUCTOR
+
+    METHOD attack()
+        IF arrows > 0 THEN
+            SET arrows = arrows - 1
+            DISPLAY "Shoots an arrow"
+        ELSE
+            DISPLAY "No arrows remaining"
+        END IF
+    END METHOD
+END CLASS
+
+CLASS Inventory
+    ATTRIBUTES
+        PRIVATE items : List<String>
+
+    CONSTRUCTOR()
+        CREATE empty items list
+    END CONSTRUCTOR
+
+    METHOD addItem(item)
+        ADD item TO items
+    END METHOD
+END CLASS
+  END
+STOP
+
+Task 306: Utility Billing System
+START
+  BEGIN
+CLASS Bill
+    ATTRIBUTES
+        PRIVATE billingPeriod : String
+        PRIVATE dueDate : String
+        PRIVATE meterReading : MeterReading
+
+    CONSTRUCTOR(billingPeriod, dueDate, meterReading)
+        SET billingPeriod
+        SET dueDate
+        SET meterReading
+    END CONSTRUCTOR
+
+    METHOD calculateAmountOwed()
+        RETURN 0
+    END METHOD
+END CLASS
+
+
+CLASS ElectricityBill EXTENDS Bill
+    ATTRIBUTES
+        PRIVATE unitsConsumed : Number
+        PRIVATE unitRate : Number
+
+    CONSTRUCTOR(billingPeriod, dueDate, meterReading, unitsConsumed, unitRate)
+        CALL Bill(billingPeriod, dueDate, meterReading)
+        SET unitsConsumed
+        SET unitRate
+    END CONSTRUCTOR
+
+    METHOD calculateAmountOwed()
+        RETURN unitsConsumed * unitRate
+    END METHOD
+END CLASS
+
+
+CLASS WaterBill EXTENDS Bill
+    ATTRIBUTES
+        PRIVATE litersConsumed : Number
+        PRIVATE flatRate : Number
+        PRIVATE standingCharge : Number
+
+    CONSTRUCTOR(billingPeriod, dueDate, meterReading, litersConsumed, flatRate, standingCharge)
+        CALL Bill(billingPeriod, dueDate, meterReading)
+        SET litersConsumed
+        SET flatRate
+        SET standingCharge
+    END CONSTRUCTOR
+
+    METHOD calculateAmountOwed()
+        RETURN (litersConsumed * flatRate) + standingCharge
+    END METHOD
+END CLASS
+
+
+CLASS GasBill EXTENDS Bill
+    ATTRIBUTES
+        PRIVATE unitsConsumed : Number
+        PRIVATE unitRate : Number
+        PRIVATE winterSurcharge : Number
+
+    CONSTRUCTOR(billingPeriod, dueDate, meterReading, unitsConsumed, unitRate, winterSurcharge)
+        CALL Bill(billingPeriod, dueDate, meterReading)
+        SET unitsConsumed
+        SET unitRate
+        SET winterSurcharge
+    END CONSTRUCTOR
+
+    METHOD calculateAmountOwed()
+        RETURN (unitsConsumed * unitRate) + winterSurcharge
+    END METHOD
+END CLASS
+
+
+CLASS MeterReading
+    ATTRIBUTES
+        PRIVATE startReading : Number
+        PRIVATE endReading : Number
+
+    CONSTRUCTOR(startReading, endReading)
+        SET startReading
+        SET endReading
+    END CONSTRUCTOR
+
+    METHOD getConsumption()
+        RETURN endReading - startReading
+    END METHOD
+END CLASS
+
+
+CLASS CustomerAccount
+    ATTRIBUTES
+        PRIVATE accountID : Number
+        PRIVATE customerName : String
+        PRIVATE bills : List<Bill>
+
+    CONSTRUCTOR(accountID, customerName)
+        SET accountID
+        SET customerName
+        CREATE empty bills list
+    END CONSTRUCTOR
+
+    METHOD addBill(bill)
+        ADD bill TO bills
+    END METHOD
+END CLASS
+
+END
+STOP
+
+Task 307: Ride-Sharing Vehicle Tiers
+
+START
+  BEGIN
+CLASS Ride
+    ATTRIBUTES
+        PRIVATE pickupLocation : String
+        PRIVATE dropOffLocation : String
+        PRIVATE route : Route
+
+    CONSTRUCTOR(pickupLocation, dropOffLocation, route)
+        SET pickupLocation
+        SET dropOffLocation
+        SET route
+    END CONSTRUCTOR
+
+    METHOD calculateFare()
+        RETURN 0
+    END METHOD
+END CLASS
+
+
+CLASS StandardRide EXTENDS Ride
+    ATTRIBUTES
+        PRIVATE distance : Number
+        PRIVATE ratePerKilometer : Number
+
+    CONSTRUCTOR(pickupLocation, dropOffLocation, route, distance, ratePerKilometer)
+        CALL Ride(pickupLocation, dropOffLocation, route)
+        SET distance
+        SET ratePerKilometer
+    END CONSTRUCTOR
+
+    METHOD calculateFare()
+        RETURN distance * ratePerKilometer
+    END METHOD
+END CLASS
+
+
+CLASS PremiumRide EXTENDS Ride
+    ATTRIBUTES
+        PRIVATE distance : Number
+        PRIVATE ratePerKilometer : Number
+        PRIVATE comfortSurcharge : Number
+
+    CONSTRUCTOR(pickupLocation, dropOffLocation, route, distance, ratePerKilometer, comfortSurcharge)
+        CALL Ride(pickupLocation, dropOffLocation, route)
+        SET distance
+        SET ratePerKilometer
+        SET comfortSurcharge
+    END CONSTRUCTOR
+
+    METHOD calculateFare()
+        RETURN (distance * ratePerKilometer) + comfortSurcharge
+    END METHOD
+END CLASS
+
+
+CLASS SharedRide EXTENDS StandardRide
+    ATTRIBUTES
+        PRIVATE passengerCount : Number
+
+    CONSTRUCTOR(pickupLocation, dropOffLocation, route, distance, ratePerKilometer, passengerCount)
+        CALL StandardRide(pickupLocation, dropOffLocation, route, distance, ratePerKilometer)
+        SET passengerCount
+    END CONSTRUCTOR
+
+    METHOD calculateFare()
+        RETURN CALL StandardRide.calculateFare() / passengerCount
+    END METHOD
+END CLASS
+
+
+CLASS Waypoint
+    ATTRIBUTES
+        PRIVATE location : String
+
+    CONSTRUCTOR(location)
+        SET location
+    END CONSTRUCTOR
+END CLASS
+
+
+CLASS Route
+    ATTRIBUTES
+        PRIVATE waypoints : List<Waypoint>
+
+    CONSTRUCTOR()
+        CREATE empty waypoints list
+    END CONSTRUCTOR
+
+    METHOD addWaypoint(waypoint)
+        ADD waypoint TO waypoints
+    END METHOD
+END CLASS
+
+END
+STOP
